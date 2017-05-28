@@ -23,8 +23,8 @@ def parse(event):
     return {
         "id": event['mbo_id'],
         "is_canceled": event['is_canceled'],
-        "start_date": arrow.get(event['start_date_time'], tzinfo='US/Eastern'),
-        "end_date": arrow.get(event['end_date_time'], tzinfo='US/Eastern'),
+        "start_date": arrow.get(event['start_date_time'], tzinfo='US/Eastern').replace(tzinfo='utc'),
+        "end_date": arrow.get(event['end_date_time'], tzinfo='US/Eastern').replace(tzinfo='utc'),
         "name": event['name'].strip(),
         "instructor": event['staff']['name']
     }
