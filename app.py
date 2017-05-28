@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 SCHEDULE_API = "https://d2x1g6t1ad4mvo.cloudfront.net/locations/{site_id}/{location_id}/classes/{start_date}/{end_date}"
 
+# https://d2x1g6t1ad4mvo.cloudfront.net/locations/31731/29/classes/2017-05-17/2017-05-29
 # https://d2x1g6t1ad4mvo.cloudfront.net/locations/31731/29/classes/2017-06-12/2017-06-16
 # https://d7mth1zoj92fj.cloudfront.net/data/all-locations
 
@@ -22,8 +23,8 @@ def parse(event):
     return {
         "id": event['mbo_id'],
         "is_canceled": event['is_canceled'],
-        "start_date": arrow.get(event['start_date_time'], tzinfo='utc'),
-        "end_date": arrow.get(event['end_date_time'], tzinfo='utc'),
+        "start_date": arrow.get(event['start_date_time'], tzinfo='US/Eastern'),
+        "end_date": arrow.get(event['end_date_time'], tzinfo='US/Eastern'),
         "name": event['name'].strip(),
         "instructor": event['staff']['name']
     }
@@ -37,7 +38,6 @@ def get_events(site_id, location_id, start_date):
         "start_date": start_date.format("YYYY-MM-DD"),
         "end_date": start_date.replace(days=+4).format("YYYY-MM-DD")
     }
-    print(url_params)
     response = requests.get(SCHEDULE_API.format(**url_params))
     return response.json()
 
