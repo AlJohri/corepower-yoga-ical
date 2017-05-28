@@ -21,12 +21,13 @@ def date_to_ical_date(date):
 def parse(event):
 
     # date times come in as local even though they end in "Z" which signifies UTC
+    # tz is most likely local to location
 
     return {
         "id": event['mbo_id'],
         "is_canceled": event['is_canceled'],
-        "start_date": arrow.get(event['start_date_time'], tzinfo='US/Eastern').to('utc'),
-        "end_date": arrow.get(event['end_date_time'], tzinfo='US/Eastern').to('utc'),
+        "start_date": arrow.get(event['start_date_time']).replace(tzinfo='US/Eastern').to('utc'),
+        "end_date": arrow.get(event['end_date_time']).replace(tzinfo='US/Eastern').to('utc'),
         "name": event['name'].strip(),
         "instructor": event['staff']['name']
     }
@@ -41,6 +42,7 @@ def get_events(site_id, location_id, start_date):
         "end_date": start_date.replace(days=+4).format("YYYY-MM-DD")
     }
     response = requests.get(SCHEDULE_API.format(**url_params))
+
     return response.json()
 
 @app.route("/<location>.ics")
@@ -55,10 +57,10 @@ def schedule(location):
     today = arrow.get(arrow.utcnow().date())
 
     dates = [
-        # today.replace(days=-5),
+        today.replace(days=-5),
         today,
-        # today.replace(days=5),
-        # today.replace(days=10)
+        today.replace(days=5),
+        today.replace(days=10)
     ]
 
     events = [parse(event) for date in dates for event in get_events(site_id, location_id, date)]
