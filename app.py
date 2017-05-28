@@ -20,11 +20,13 @@ def date_to_ical_date(date):
 
 def parse(event):
 
+    # date times come in as local even though they end in "Z" which signifies UTC
+
     return {
         "id": event['mbo_id'],
         "is_canceled": event['is_canceled'],
-        "start_date": arrow.get(event['start_date_time'], tzinfo='US/Eastern').replace(tzinfo='utc'),
-        "end_date": arrow.get(event['end_date_time'], tzinfo='US/Eastern').replace(tzinfo='utc'),
+        "start_date": arrow.get(event['start_date_time'], tzinfo='US/Eastern').to(tzinfo='utc'),
+        "end_date": arrow.get(event['end_date_time'], tzinfo='US/Eastern').to(tzinfo='utc'),
         "name": event['name'].strip(),
         "instructor": event['staff']['name']
     }
@@ -53,14 +55,16 @@ def schedule(location):
     today = arrow.get(arrow.utcnow().date())
 
     dates = [
-        today.replace(days=-5),
+        # today.replace(days=-5),
         today,
-        today.replace(days=5),
-        today.replace(days=10)
+        # today.replace(days=5),
+        # today.replace(days=10)
     ]
 
     events = [parse(event) for date in dates for event in get_events(site_id, location_id, date)]
     events = [event for event in events if not event['is_canceled']]
+
+    import pdb; pdb.set_trace()
 
     cal = Calendar()
     for event in events:
