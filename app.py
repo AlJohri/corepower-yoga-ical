@@ -25,8 +25,8 @@ def parse(event):
     return {
         "id": event['mbo_id'],
         "is_canceled": event['is_canceled'],
-        "start_date": arrow.get(event['start_date_time'], tzinfo='US/Eastern').to(tzinfo='utc'),
-        "end_date": arrow.get(event['end_date_time'], tzinfo='US/Eastern').to(tzinfo='utc'),
+        "start_date": arrow.get(event['start_date_time'], tzinfo='US/Eastern').to('utc'),
+        "end_date": arrow.get(event['end_date_time'], tzinfo='US/Eastern').to('utc'),
         "name": event['name'].strip(),
         "instructor": event['staff']['name']
     }
@@ -63,8 +63,6 @@ def schedule(location):
 
     events = [parse(event) for date in dates for event in get_events(site_id, location_id, date)]
     events = [event for event in events if not event['is_canceled']]
-
-    import pdb; pdb.set_trace()
 
     cal = Calendar()
     for event in events:
