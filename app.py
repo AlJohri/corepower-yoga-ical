@@ -64,7 +64,6 @@ def schedule(location):
     ]
 
     events = [parse(event) for date in dates for event in get_events(site_id, location_id, date)]
-    events = [event for event in events if not event['is_canceled']]
 
     cal = Calendar()
     for event in events:
@@ -74,6 +73,7 @@ def schedule(location):
         cal_event['dtend'] = date_to_ical_date(event['end_date'])
         cal_event['summary'] = event['name']
         cal_event['description'] = event['instructor']
+        cal_event['status'] = "CANCELLED" if event['is_canceled'] else "CONFIRMED"
         cal.add_component(cal_event)
 
     return send_file(BytesIO(cal.to_ical()),
