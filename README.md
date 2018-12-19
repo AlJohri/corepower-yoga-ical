@@ -6,15 +6,10 @@
 
 ## Development
 
-### Setup
+### Quickstart
 ```
-mkvirtualenv -p python3 -r requirements.txt corepower-yoga-ical
-```
-
-### Usage
-```
-workon corepower-yoga-ical
-python app.py
+pipenv install
+pipenv run python app.py
 ```
 
 ### Heroku

@@ -29,7 +29,7 @@ def parse(event):
         "start_date": arrow.get(event['start_date_time']).replace(tzinfo='US/Eastern').to('utc'),
         "end_date": arrow.get(event['end_date_time']).replace(tzinfo='US/Eastern').to('utc'),
         "name": event['name'].strip(),
-        "instructor": event['staff']['name']
+        "teacher": event['teacher']['name']
     }
 
 # https://d2x1g6t1ad4mvo.cloudfront.net/locations/31731/29/classes/2017-05-23/2017-05-27
@@ -72,7 +72,7 @@ def schedule(location):
         cal_event['dtstart'] = date_to_ical_date(event['start_date'])
         cal_event['dtend'] = date_to_ical_date(event['end_date'])
         cal_event['summary'] = event['name']
-        cal_event['description'] = event['instructor']
+        cal_event['description'] = event['teacher']
         cal_event['status'] = "CANCELLED" if event['is_canceled'] else "CONFIRMED"
         cal.add_component(cal_event)
 
