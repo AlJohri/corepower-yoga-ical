@@ -3,6 +3,7 @@
 ## iCal Links
 
 - https://corepower-yoga-ical.herokuapp.com/pentagon-city.ics
+- https://corepower-yoga-ical.herokuapp.com/dupont-circle.ics
 
 ## Development
 
