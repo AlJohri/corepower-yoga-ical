@@ -54,6 +54,9 @@ def schedule(location):
     elif location == 'dupont-circle':
         site_id = 31731
         location_id = 21
+    elif location == 'city-center-dc':
+        site_id = 31731
+        location_id = 27
     else:
         return f"location {location} is unknown", 500
 
