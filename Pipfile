@@ -9,7 +9,7 @@ verify_ssl = true
 arrow = "==0.10.0"
 icalendar = "==3.11.4"
 requests = "==2.16.5"
-Flask = "==0.12.2"
+Flask = "==1.0"
 
 [requires]
 python_version = "3.6"
